@@ -4,7 +4,6 @@
     <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <UserSecretsId>aspnet-ArbitraryAspNetCoreWebApi-e7a6531c-c2b8-448a-b9ca-ce4d82cd7c31</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
