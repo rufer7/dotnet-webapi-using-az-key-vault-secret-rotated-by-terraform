@@ -7,7 +7,6 @@ namespace ArbitraryAspNetCoreWebApiTests
         [Theory]
         [InlineData(0, 32)]
         [InlineData(100, 211)]
-
         public void TemperatureF_ForTemperatureC_ReturnsExpectedValue(int temperatureC, int expectedResultInF)
         {
             // Arrange
