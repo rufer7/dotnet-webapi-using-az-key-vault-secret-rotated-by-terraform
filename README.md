@@ -52,6 +52,7 @@ Rotate Azure Key Vault secrets used by an ASP.NET Core Web API with Terraform on
    - `AzureAd:ClientId` (client id of the app registration created by Terraform)
    - `AzureAd:Domain`
    - `AzureAd:TenantId`
+   - `AzureKeyVaultEndpoint` (URL of Azure Key Vault created by Terraform)
 
 1. Right click on the project `ArbitraryAspNetCoreWebApi` and select `Set as Startup Project`
 1. Press `F5` to start the application
