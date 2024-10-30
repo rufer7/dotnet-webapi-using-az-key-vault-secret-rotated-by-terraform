@@ -17,7 +17,7 @@ Rotate Azure Key Vault secrets used by an ASP.NET Core Web API with Terraform on
 
 ### Deploy resources to host terraform state
 
-1. Rename and adjust values in `vars/dev.core.tfvars`
+1. Adjust values in `iac-core\vars\dev.core.tfvars`
 1. Create resources to host terraform state using the following commands
 
    ```PowerShell
