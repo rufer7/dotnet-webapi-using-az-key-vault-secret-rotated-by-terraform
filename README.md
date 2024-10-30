@@ -27,6 +27,21 @@ Rotate Azure Key Vault secrets used by an ASP.NET Core Web API with Terraform on
    terraform apply --var-file .\vars\dev.core.tfvars --state=dev.core.tfstate
    ```
 
+### Deploy application resources
+
+> [!NOTE]  
+> The application resources are created via GitHub actions workflow. The following steps are only required if you want to create the resources manually.
+
+1. Adjust values in `iac\vars\dev.app.tfvars`
+1. Adjust values in `iac\backend\dev.backend.tfvars`
+1. Create resources using the following commands
+   
+      ```PowerShell
+      az login -t [AZURE_TENANT_ID]
+      cd [PATH_TO_REPOSITORY]\iac
+      terraform init
+      ```
+
 ### Run the Application locally
 
 1. Clone this GitHub repository
