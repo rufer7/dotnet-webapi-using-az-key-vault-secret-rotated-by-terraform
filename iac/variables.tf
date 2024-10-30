@@ -8,7 +8,11 @@ variable "subscription_id" {
 }
 variable "resource_prefix" {
   type        = string
-  description = "Resource prefix to use for all resources"
+  description = "Resource prefix to use for resource names"
+}
+variable "resource_prefix_short" {
+  type        = string
+  description = "Short resource prefix to use for resource names"
 }
 variable "default_location" {
   type        = string

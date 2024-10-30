@@ -9,9 +9,9 @@ resource "azuread_application" "aadapp" {
 }
 
 resource "azuread_application_password" "aadapppwd" {
-  display_name      = "apppwd"
-  application_id    = azuread_application.aadapp.id
-  end_date_relative = "17520h"
+  display_name   = "apppwd"
+  application_id = azuread_application.aadapp.id
+  end_date       = timeadd(timestamp(), "90d")
 }
 
 resource "azurerm_key_vault_secret" "aadapppwd-secret" {

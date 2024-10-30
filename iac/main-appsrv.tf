@@ -18,16 +18,16 @@ resource "azurerm_linux_web_app" "appsrv" {
     application_stack {
       dotnet_version = "8.0"
     }
-    http2_enabled     = true
+    http2_enabled = true
   }
   identity { type = "SystemAssigned" }
   app_settings = merge(
     {
-      "WEBSITE_RUN_FROM_PACKAGE"              = "1"
-      "AzureAd__Domain"                       = data.azuread_domains.aad_domains.domains[0].domain_name
-      "AzureAd__TenantId"                     = var.tenant_id
-      "AzureAd__ClientId"                     = azuread_application.aadapp.client_id
-      "AzureKeyVaultEndpoint"                 = azurerm_key_vault.kv.vault_uri
+      "WEBSITE_RUN_FROM_PACKAGE" = "1"
+      "AzureAd__ClientId"        = azuread_application.aadapp.client_id
+      "AzureAd__Domain"          = data.azuread_domains.aad_domains.domains[0].domain_name
+      "AzureAd__TenantId"        = var.tenant_id
+      "AzureKeyVaultEndpoint"    = azurerm_key_vault.kv.vault_uri
     }
   )
 }

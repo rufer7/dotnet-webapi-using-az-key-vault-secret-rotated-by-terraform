@@ -39,7 +39,8 @@ Rotate Azure Key Vault secrets used by an ASP.NET Core Web API with Terraform on
       ```PowerShell
       az login -t [AZURE_TENANT_ID]
       cd [PATH_TO_REPOSITORY]\iac
-      terraform init
+      terraform init --backend-config=backend\dev.backend.tfvars
+      terraform apply --var-file .\vars\dev.app.tfvars --state=dev.app.tfstate
       ```
 
 ### Run the Application locally

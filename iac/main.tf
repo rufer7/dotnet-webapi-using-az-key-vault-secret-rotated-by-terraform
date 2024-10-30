@@ -5,6 +5,7 @@ data "azuread_domains" "aad_domains" {
 
 locals {
   name_template       = "${var.resource_prefix}-<service>-${var.stage}"
+  name_template_short = "${var.resource_prefix_short}-<service>-${var.stage}"
 }
 
 # Resource Group
