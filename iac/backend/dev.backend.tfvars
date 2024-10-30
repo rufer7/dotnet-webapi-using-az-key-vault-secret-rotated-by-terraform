@@ -1,0 +1,7 @@
+subscription_id      = "00000000-0000-0000-0000-000000000000"
+tenant_id            = "00000000-0000-0000-0000-000000000000"
+resource_group_name  = "kv-secret-rotation-sample-rg-iac"
+storage_account_name = "storiac01"
+container_name       = "tfstate"
+key                  = "kv-secret-rotation-sample.tfstate"
+use_azuread_auth     = "true"
