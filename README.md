@@ -5,7 +5,7 @@
 
 Rotate Azure Key Vault secrets used by an ASP.NET Core Web API with Terraform on every deployment
 
-## Getting Started
+## Getting started
 
 ### Prerequisites
 
@@ -43,7 +43,7 @@ Rotate Azure Key Vault secrets used by an ASP.NET Core Web API with Terraform on
       terraform apply --var-file .\vars\dev.app.tfvars --state=dev.app.tfstate
       ```
 
-### Run the Application locally
+### Run application locally
 
 1. Clone this GitHub repository
 1. Open the solution `src\ArbitraryAspNetCoreWebApi.sln` in `Visual Studio 2022 Preview`
@@ -56,3 +56,7 @@ Rotate Azure Key Vault secrets used by an ASP.NET Core Web API with Terraform on
 
 1. Right click on the project `ArbitraryAspNetCoreWebApi` and select `Set as Startup Project`
 1. Press `F5` to start the application
+
+## Useful links
+
+- [Set up a GitHub Actions workflow manually](https://learn.microsoft.com/en-us/azure/app-service/deploy-github-actions?tabs=openid%2Caspnetcore&WT.mc_id=MVP_344197#set-up-a-github-actions-workflow-manually)
