@@ -8,6 +8,9 @@ permissions:
   id-token: write
   contents: read
 
+env:
+  DOTNET_VERSION: '9.0.x'
+
 jobs:
   build_and_test:
     name: Build and execute tests
@@ -18,7 +21,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 9.0.x
+          dotnet-version: ${{ env.DOTNET_VERSION }}
       - name: Build
         run: dotnet build src/ArbitraryAspNetCoreWebApi.sln
         # TODO - create ZIP
