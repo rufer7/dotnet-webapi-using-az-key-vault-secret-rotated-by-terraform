@@ -12,6 +12,7 @@ env:
   AZURE_WEBAPP_PACKAGE_PATH: "./deploy"
   DOTNET_VERSION: "9.0.x"
   TERRAFORM_VERSION: "1.9.8"
+  TERRAFORM_ROOT_DIRECTORY: "iac"
 
 jobs:
   build_test_publish:
@@ -52,9 +53,9 @@ jobs:
         with:
           terraform_version: ${{ env.TERRAFORM_VERSION }}
       - name: Terraform init
-        run: terraform init --backend-config=iac/backend/dev.backend.tfvars
+        run: terraform -chdir=${{ env.TERRAFORM_ROOT_DIRECTORY }} init --backend-config=iac/backend/dev.backend.tfvars
       - name: Terraform plan
-        run: terraform plan --var-file iac/vars/dev.app.tfvars --state=dev.app.tfstate -out=tfplan
+        run: terraform  -chdir=${{ env.TERRAFORM_ROOT_DIRECTORY }} plan --var-file=iac/vars/dev.app.tfvars --state=dev.app.tfstate -out=tfplan
 
   iac_apply:
     name: Apply Infrastructure as Code
@@ -72,9 +73,9 @@ jobs:
         with:
           terraform_version: ${{ env.TERRAFORM_VERSION }}
       - name: Terraform init
-        run: terraform init --backend-config=iac/backend/dev.backend.tfvars
+        run: terraform -chdir=${{ env.TERRAFORM_ROOT_DIRECTORY }} init --backend-config=iac/backend/dev.backend.tfvars
       - name: Terraform apply
-        run: terraform apply --var-file iac/vars/dev.app.tfvars --state=dev.app.tfstate -auto-approve
+        run: terraform -chdir=${{ env.TERRAFORM_ROOT_DIRECTORY }} apply --var-file iac/vars/dev.app.tfvars --state=dev.app.tfstate -auto-approve
 
   deploy:
     name: Deploy to Azure Web App
