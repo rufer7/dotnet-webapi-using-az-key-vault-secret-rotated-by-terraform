@@ -24,7 +24,7 @@ Rotate Azure Key Vault secrets used by an ASP.NET Core Web API with Terraform on
    az login -t [AZURE_TENANT_ID]
    cd [PATH_TO_REPOSITORY]\iac-core
    terraform init
-   terraform apply --var-file .\vars\dev.core.tfvars --state=dev.core.tfstate
+   terraform apply --var-file=.\vars\dev.core.tfvars --state=dev.core.tfstate
    ```
 
 ### Deploy application resources
@@ -32,6 +32,7 @@ Rotate Azure Key Vault secrets used by an ASP.NET Core Web API with Terraform on
 > [!NOTE]  
 > The application resources are created via GitHub actions workflow. The following steps are only required if you want to create the resources manually.
 > To generate deployment credentials and configuring the GitHub secrets for the GitHub actions workflow, see [here](https://learn.microsoft.com/en-us/azure/app-service/deploy-github-actions?tabs=openid%2Caspnetcore&WT.mc_id=MVP_344197#set-up-a-github-actions-workflow-manually).
+> There are currently two GitHub environments set up in the repository: `dev` and `dev-iac` (for both a dedicated federated credential is set up in the Entra app)
 
 1. Adjust values in `iac\vars\dev.app.tfvars`
 1. Adjust values in `iac\backend\dev.backend.tfvars`
@@ -41,7 +42,7 @@ Rotate Azure Key Vault secrets used by an ASP.NET Core Web API with Terraform on
    az login -t [AZURE_TENANT_ID]
    cd [PATH_TO_REPOSITORY]\iac
    terraform init --backend-config=backend\dev.backend.tfvars
-   terraform apply --var-file .\vars\dev.app.tfvars --state=dev.app.tfstate
+   terraform apply --var-file=.\vars\dev.app.tfvars --state=dev.app.tfstate
    ```
 
 ### Run application locally
