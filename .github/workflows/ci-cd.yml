@@ -60,7 +60,7 @@ jobs:
   iac_apply:
     name: Apply Infrastructure as Code
     runs-on: ubuntu-latest
-    environment: dev
+    environment: dev-iac
     needs: iac_plan
     steps:
       - uses: azure/login@v1
