@@ -41,8 +41,8 @@ jobs:
     name: Plan Infrastructure as Code
     runs-on: ubuntu-latest
     environment: dev
-    needs: build_test_publish
     steps:
+      - uses: actions/checkout@v4
       - uses: azure/login@v1
         with:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
@@ -63,6 +63,7 @@ jobs:
     environment: dev-iac
     needs: iac_plan
     steps:
+      - uses: actions/checkout@v4
       - uses: azure/login@v1
         with:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
