@@ -27,7 +27,7 @@ jobs:
       - name: Build
         run: dotnet build src/ArbitraryAspNetCoreWebApi.sln --configuration Release
       - name: Test
-        run: dotnet test src/ArbitraryAspNetCoreWebApi.sln --no-build --verbosity normal
+        run: dotnet test src/ArbitraryAspNetCoreWebApi.sln --configuration Release --no-build --verbosity normal
       - name: Publish
         run: |
           dotnet publish src/ArbitraryAspNetCoreWebApi.sln -configuration Release --property:PublishDir='${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/api'
