@@ -53,9 +53,9 @@ jobs:
         with:
           terraform_version: ${{ env.TERRAFORM_VERSION }}
       - name: Terraform init
-        run: terraform -chdir=${{ env.TERRAFORM_ROOT_DIRECTORY }} init --backend-config=backend/dev.backend.tfvars
+        run: terraform -chdir=${{ env.TERRAFORM_ROOT_DIRECTORY }} init --backend-config=backend/dev.backend.tfvars --var='subscription_id=${{ secrets.AZURE_SUBSCRIPTION_ID }}' --var='tenant_id=${{ secrets.AZURE_TENANT_ID }}'
       - name: Terraform plan
-        run: terraform  -chdir=${{ env.TERRAFORM_ROOT_DIRECTORY }} plan --var-file=vars/dev.app.tfvars --state=dev.app.tfstate -out=tfplan
+        run: terraform -chdir=${{ env.TERRAFORM_ROOT_DIRECTORY }} plan --var-file=vars/dev.app.tfvars --var='subscription_id=${{ secrets.AZURE_SUBSCRIPTION_ID }}' --var='tenant_id=${{ secrets.AZURE_TENANT_ID }}' --state=dev.app.tfstate -out=tfplan
 
   iac_apply:
     name: Apply Infrastructure as Code
@@ -74,9 +74,9 @@ jobs:
         with:
           terraform_version: ${{ env.TERRAFORM_VERSION }}
       - name: Terraform init
-        run: terraform -chdir=${{ env.TERRAFORM_ROOT_DIRECTORY }} init --backend-config=backend/dev.backend.tfvars
+        run: terraform -chdir=${{ env.TERRAFORM_ROOT_DIRECTORY }} init --backend-config=backend/dev.backend.tfvars --var='subscription_id=${{ secrets.AZURE_SUBSCRIPTION_ID }}' --var='tenant_id=${{ secrets.AZURE_TENANT_ID }}'
       - name: Terraform apply
-        run: terraform -chdir=${{ env.TERRAFORM_ROOT_DIRECTORY }} apply -auto-approve --var-file=vars/dev.app.tfvars --state=dev.app.tfstate -auto-approve
+        run: terraform -chdir=${{ env.TERRAFORM_ROOT_DIRECTORY }} apply --var-file=vars/dev.app.tfvars --var='subscription_id=${{ secrets.AZURE_SUBSCRIPTION_ID }}' --var='tenant_id=${{ secrets.AZURE_TENANT_ID }}' --state=dev.app.tfstate -auto-approve
 
   deploy:
     name: Deploy to Azure Web App
