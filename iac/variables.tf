@@ -1,10 +1,12 @@
 variable "tenant_id" {
   type        = string
   description = "Azure tenant ID"
+  sensitive   = true
 }
 variable "subscription_id" {
   type        = string
   description = "Azure subscription ID"
+  sensitive   = true
 }
 variable "resource_prefix" {
   type        = string
