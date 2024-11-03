@@ -76,7 +76,7 @@ jobs:
       - name: Terraform init
         run: terraform -chdir=${{ env.TERRAFORM_ROOT_DIRECTORY }} init --backend-config=backend/dev.backend.tfvars
       - name: Terraform apply
-        run: terraform -chdir=${{ env.TERRAFORM_ROOT_DIRECTORY }} apply --var-file=vars/dev.app.tfvars --state=dev.app.tfstate -auto-approve
+        run: terraform -chdir=${{ env.TERRAFORM_ROOT_DIRECTORY }} apply -auto-approve --var-file=vars/dev.app.tfvars --state=dev.app.tfstate -auto-approve
 
   deploy:
     name: Deploy to Azure Web App
