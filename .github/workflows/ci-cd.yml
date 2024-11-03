@@ -9,7 +9,7 @@ permissions:
   contents: read
 
 env:
-  AZURE_WEBAPP_PACKAGE_PATH: "/src/ArbitraryAspNetCoreWebApi"
+  AZURE_WEBAPP_PACKAGE_PATH: "src/ArbitraryAspNetCoreWebApi"
   DOTNET_VERSION: "9.0.x"
   TERRAFORM_VERSION: "1.9.8"
 
