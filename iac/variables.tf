@@ -1,3 +1,7 @@
+variable "client_id" {
+  type        = string
+  description = "Entra app client id"
+}
 variable "tenant_id" {
   type        = string
   description = "Azure tenant ID"
