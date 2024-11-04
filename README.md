@@ -36,7 +36,9 @@ Rotate Azure Key Vault secrets used by an ASP.NET Core Web API with Terraform on
 > To generate deployment credentials and to configure the GitHub secrets for the GitHub actions workflow, see [here](https://learn.microsoft.com/en-us/azure/app-service/deploy-github-actions?tabs=openid%2Caspnetcore&WT.mc_id=MVP_344197#set-up-a-github-actions-workflow-manually).
 > There are currently two GitHub environments set up for this repository: `dev` and `dev-iac`
 > For both of them a separate federated credential is set up in the Entra app.
-> Furthermore the service principal is a member of the Entra group `kv-secret-rotation-sample-contributor-iac` and Microsoft Graph application permission `Domain.Read.All` got added
+> Furthermore the service principal is a member of the Entra group `kv-secret-rotation-sample-contributor-iac` and the following Microsoft Graph application permissions got added
+> - `Domain.Read.All`
+> - `Group.ReadWrite.All`
 
 1. Adjust values in `iac\vars\dev.app.tfvars`
 1. Adjust values in `iac\backend\dev.backend.tfvars`
