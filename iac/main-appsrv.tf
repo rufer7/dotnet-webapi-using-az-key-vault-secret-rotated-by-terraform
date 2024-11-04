@@ -19,6 +19,7 @@ resource "azurerm_linux_web_app" "appsrv" {
       dotnet_version = "8.0"
     }
     http2_enabled = true
+    always_on     = false
   }
   identity { type = "SystemAssigned" }
   app_settings = merge(
