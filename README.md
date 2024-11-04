@@ -37,6 +37,7 @@ Rotate Azure Key Vault secrets used by an ASP.NET Core Web API with Terraform on
 > There are currently two GitHub environments set up for this repository: `dev` and `dev-iac`
 > For both of them a separate federated credential is set up in the Entra app.
 > Furthermore the service principal is a member of the Entra group `kv-secret-rotation-sample-contributor-iac` and the following Microsoft Graph application permissions got added
+> - `Application.ReadWrite.All`
 > - `Domain.Read.All`
 > - `Group.ReadWrite.All`
 
