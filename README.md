@@ -40,6 +40,7 @@ Rotate Azure Key Vault secrets used by an ASP.NET Core Web API with Terraform on
 > - `Application.ReadWrite.All`
 > - `Domain.Read.All`
 > - `Group.ReadWrite.All`
+> Last but not least, the service proncipal got assigned owner role on resource group.
 
 1. Adjust values in `iac\vars\dev.app.tfvars`
 1. Adjust values in `iac\backend\dev.backend.tfvars`
