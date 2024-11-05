@@ -96,7 +96,7 @@ jobs:
         uses: azure/webapps-deploy@v3.0.2
         with:
           app-name: kv-secret-rotation-sample-appsrv-dev
-          package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+          package: '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}'
       - name: Logout
         run: |
           az logout
