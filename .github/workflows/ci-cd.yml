@@ -93,8 +93,6 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
       - name: Deploy to Azure Web App
-        env:
-          AZURE_WEBAPP_NAME: kv-secret-rotation-sample-appsrv-dev
         uses: azure/webapps-deploy@v3.0.2
         with:
           app-name: kv-secret-rotation-sample-appsrv-dev
