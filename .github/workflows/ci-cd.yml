@@ -78,6 +78,11 @@ jobs:
         run: terraform -chdir=${{ env.TERRAFORM_ROOT_DIRECTORY }} init --backend-config=backend/dev.backend.tfvars --backend-config='client_id=${{ secrets.AZURE_CLIENT_ID }}' --backend-config='subscription_id=${{ secrets.AZURE_SUBSCRIPTION_ID }}' --backend-config='tenant_id=${{ secrets.AZURE_TENANT_ID }}' --backend-config='use_oidc=true'
       - name: Terraform apply
         run: terraform -chdir=${{ env.TERRAFORM_ROOT_DIRECTORY }} apply --var-file=vars/dev.app.tfvars --var='client_id=${{ secrets.AZURE_CLIENT_ID }}' --var='subscription_id=${{ secrets.AZURE_SUBSCRIPTION_ID }}' --var='tenant_id=${{ secrets.AZURE_TENANT_ID }}' --state=dev.app.tfstate -auto-approve
+      - name: Deploy to Azure web app
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: kv-secret-rotation-sample-appsrv-dev
+          package: "${{ env.AZURE_WEBAPP_PACKAGE_PATH }}"
 
   deploy:
     name: Deploy to Azure Web App
