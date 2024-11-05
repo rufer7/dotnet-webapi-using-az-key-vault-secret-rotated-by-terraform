@@ -102,7 +102,7 @@ jobs:
         uses: azure/cli@v2
         with:
           inlineScript: |
-            az webapp deploy --resource-group kv-secret-rotation-sample-rg-dev --name kv-secret-rotation-sample-appsrv-dev --src-path /home/runner/work/dotnet-webapi-using-az-key-vault-secret-rotated-by-terraform/dotnet-webapi-using-az-key-vault-secret-rotated-by-terraform/arbitrary-aspnetcore-webapi.zip --type zip
+            az webapp deploy --resource-group kv-secret-rotation-sample-rg-dev --name kv-secret-rotation-sample-appsrv-dev --src-path ./arbitrary-aspnetcore-webapi.zip --type zip
       - name: Logout
         run: |
           az logout
