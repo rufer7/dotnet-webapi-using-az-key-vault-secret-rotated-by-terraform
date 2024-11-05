@@ -93,15 +93,16 @@ jobs:
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 #      - name: Deploy to Azure Web App
-#        uses: azure/webapps-deploy@v3.0.2
+#        uses: azure/webapps-deploy@v3
 #        with:
 #          app-name: kv-secret-rotation-sample-appsrv-dev
+#          resource-group-name: kv-secret-rotation-sample-rg-dev
 #          package: .
       - name: Deploy to Azure Web App
         uses: azure/cli@v2
         with:
           inlineScript: |
-            az webapp deploy --name kv-secret-rotation-sample-appsrv-dev --src-path ./arbitrary-aspnetcore-webapi
+            az webapp deploy --resource-group kv-secret-rotation-sample-rg-dev --name kv-secret-rotation-sample-appsrv-dev --src-path ./arbitrary-aspnetcore-webapi
       - name: Logout
         run: |
           az logout
