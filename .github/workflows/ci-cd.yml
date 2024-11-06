@@ -36,7 +36,7 @@ jobs:
         shell: pwsh
         run: |
           cd ./temp
-          zip -r ../${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+          zip -r ../app.zip
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
