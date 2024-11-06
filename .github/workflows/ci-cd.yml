@@ -34,7 +34,8 @@ jobs:
         run: dotnet publish src/ArbitraryAspNetCoreWebApi --configuration Release --output ./publish
       - name: Create Zip
         shell: pwsh
-        run: zip -r ${{ env.AZURE_WEBAPP_PACKAGE_PATH }} ./publish/*
+        run: |
+          zip -r ${{ env.AZURE_WEBAPP_PACKAGE_PATH }} -x ./publish/*
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
@@ -105,7 +106,7 @@ jobs:
         uses: azure/cli@v2
         with:
           inlineScript: |
-            az webapp deploy --resource-group kv-secret-rotation-sample-rg-dev --name kv-secret-rotation-sample-appsrv-dev --src-path $GITHUB_WORKSPACE/app.zip
+            az webapp deploy --resource-group kv-secret-rotation-sample-rg-dev --name kv-secret-rotation-sample-appsrv-dev --src-path $GITHUB_WORKSPACE/arbitrary-aspnetcore-webapi/app.zip
       - name: Logout
         run: |
           az logout
