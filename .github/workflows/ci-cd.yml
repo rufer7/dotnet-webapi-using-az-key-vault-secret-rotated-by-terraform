@@ -103,7 +103,7 @@ jobs:
         with:
           inlineScript: |
             chmod a+r $GITHUB_WORKSPACE/arbitrary-aspnetcore-webapi.zip
-            az webapp deploy --resource-group kv-secret-rotation-sample-rg-dev --name kv-secret-rotation-sample-appsrv-dev --src-path $GITHUB_WORKSPACE/arbitrary-aspnetcore-webapi.zip
+            az webapp deploy --resource-group kv-secret-rotation-sample-rg-dev --name kv-secret-rotation-sample-appsrv-dev --src-path $GITHUB_WORKSPACE/arbitrary-aspnetcore-webapi.zip.zip
       - name: Logout
         run: |
           az logout
