@@ -107,7 +107,7 @@ jobs:
         uses: azure/cli@v2
         with:
           inlineScript: |
-            az webapp deploy --resource-group kv-secret-rotation-sample-rg-dev --name kv-secret-rotation-sample-appsrv-dev --src-path $GITHUB_WORKSPACE/arbitrary-aspnetcore-webapi/app.zip
+            az webapp deploy --resource-group kv-secret-rotation-sample-rg-dev --name kv-secret-rotation-sample-appsrv-dev --src-path $GITHUB_WORKSPACE/arbitrary-aspnetcore-webapi/app.zip --track-status false
       - name: Logout
         run: |
           az logout
