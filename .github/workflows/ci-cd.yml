@@ -32,10 +32,13 @@ jobs:
         run: dotnet test src/ArbitraryAspNetCoreWebApi.sln --configuration Release --no-build --verbosity normal
       - name: Publish
         run: dotnet publish src/ArbitraryAspNetCoreWebApi --configuration Release --output '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}'
+      - name: Create Zip
+        shell: pwsh
+        run: zip -r app.zip ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: arbitrary-aspnetcore-webapi.zip
+          name: arbitrary-aspnetcore-webapi
           path: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
 
   iac_plan:
@@ -92,17 +95,17 @@ jobs:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-      - name: Deploy to Azure Web App
-        uses: azure/webapps-deploy@v2.2.9
-        with:
-          app-name: kv-secret-rotation-sample-appsrv-dev
-          resource-group-name: kv-secret-rotation-sample-rg-dev
-          package: .
 #      - name: Deploy to Azure Web App
-#        uses: azure/cli@v2
+#        uses: azure/webapps-deploy@v3
 #        with:
-#          inlineScript: |
-#            az webapp deploy --resource-group kv-secret-rotation-sample-rg-dev --name kv-secret-rotation-sample-appsrv-dev --src-path $GITHUB_WORKSPACE/arbitrary-aspnetcore-webapi.zip
+#          app-name: kv-secret-rotation-sample-appsrv-dev
+#          resource-group-name: kv-secret-rotation-sample-rg-dev
+#          package: .
+      - name: Deploy to Azure Web App
+        uses: azure/cli@v2
+        with:
+          inlineScript: |
+            az webapp deploy --resource-group kv-secret-rotation-sample-rg-dev --name kv-secret-rotation-sample-appsrv-dev --src-path $GITHUB_WORKSPACE/app.zip
       - name: Logout
         run: |
           az logout
