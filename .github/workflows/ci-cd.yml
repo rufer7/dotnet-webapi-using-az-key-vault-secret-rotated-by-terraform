@@ -10,7 +10,7 @@ permissions:
 
 env:
   AZURE_CORE_OUTPUT: none
-  AZURE_WEBAPP_PACKAGE_PATH: "./deploy"
+  AZURE_WEBAPP_PACKAGE_PATH: "./app.zip"
   DOTNET_VERSION: "9.0.x"
   TERRAFORM_VERSION: "1.9.8"
   TERRAFORM_ROOT_DIRECTORY: "./iac"
@@ -34,7 +34,7 @@ jobs:
         run: dotnet publish src/ArbitraryAspNetCoreWebApi --configuration Release --output ./publish
       - name: Create Zip
         shell: pwsh
-        run: zip -r ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/app.zip ./publish
+        run: zip -r ${{ env.AZURE_WEBAPP_PACKAGE_PATH }} ./publish
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
