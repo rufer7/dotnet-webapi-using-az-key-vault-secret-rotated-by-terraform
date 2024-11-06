@@ -21,7 +21,9 @@ resource "azurerm_linux_web_app" "appsrv" {
     http2_enabled = true
     always_on     = false
   }
-  identity { type = "SystemAssigned" }
+  identity {
+    type = "SystemAssigned"
+  }
   app_settings = merge(
     {
       "WEBSITE_RUN_FROM_PACKAGE" = "1"
@@ -31,4 +33,25 @@ resource "azurerm_linux_web_app" "appsrv" {
       "AzureKeyVaultEndpoint"    = azurerm_key_vault.kv.vault_uri
     }
   )
+  lifecycle {
+    ignore_changes = [
+      site_config["application_stack"]
+    ]
+  }
+}
+
+# Workaround until .NET 9.0 is supported by azurerm_linux_web_app
+resource "null_resource" "dotnet_version_adjustment" {
+  triggers = {
+    appsrv                = azurerm_linux_web_app.appsrv.id
+  }
+
+  provisioner "local-exec" {
+    command     = "az webapp config set -g ${azurerm_resource_group.rg.name} -n ${azurerm_linux_web_app.appsrv.name} --linux-fx-version"
+    interpreter = ["pwsh", "-Command"]
+  }
+
+  depends_on = [
+    azurerm_linux_web_app.appsrv
+  ]
 }
