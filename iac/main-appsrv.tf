@@ -47,7 +47,7 @@ resource "null_resource" "dotnet_version_adjustment" {
   }
 
   provisioner "local-exec" {
-    command     = "az webapp config set -g ${azurerm_resource_group.rg.name} -n ${azurerm_linux_web_app.appsrv.name} --linux-fx-version DOTNETCORE|9.0"
+    command     = "az webapp config set -g ${azurerm_resource_group.rg.name} -n ${azurerm_linux_web_app.appsrv.name} --linux-fx-version \"DOTNETCORE|9.0\""
     interpreter = ["pwsh", "-Command"]
   }
 
