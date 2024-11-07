@@ -4,7 +4,7 @@ using Microsoft.Identity.Web.Resource;
 
 namespace ArbitraryAspNetCoreWebApi.Controllers
 {
-    [Authorize]
+    [Authorize(Policy = "MyPolicy")]
     [ApiController]
     [Route("[controller]")]
     [RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes")]
@@ -14,13 +14,6 @@ namespace ArbitraryAspNetCoreWebApi.Controllers
         {
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
         };
-
-        private readonly ILogger<WeatherForecastController> _logger;
-
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
-        {
-            _logger = logger;
-        }
 
         [HttpGet(Name = "GetWeatherForecast")]
         public IEnumerable<WeatherForecast> Get()

@@ -37,10 +37,11 @@ Rotate Azure Key Vault secrets used by an ASP.NET Core Web API with Terraform on
 > There are currently two GitHub environments set up for this repository: `dev` and `dev-iac`
 > For both of them a separate federated credential is set up in the Entra app.
 > Furthermore the service principal is a member of the Entra group `kv-secret-rotation-sample-contributor-iac` and the following Microsoft Graph application permissions got added
+>
 > - `Application.ReadWrite.All`
 > - `Domain.Read.All`
 > - `Group.ReadWrite.All`
-> 
+>
 > Last but not least, the service proncipal got assigned owner role on resource group.
 
 1. Adjust values in `iac\vars\dev.app.tfvars`
@@ -68,7 +69,15 @@ Rotate Azure Key Vault secrets used by an ASP.NET Core Web API with Terraform on
 1. Right click on the project `ArbitraryAspNetCoreWebApi` and select `Set as Startup Project`
 1. Press `F5` to start the application
 
+## Test the application
+
+To test the application (either a locally running instance or the deployed one), see [Test the web API](https://learn.microsoft.com/en-us/entra/identity-platform/howto-call-a-web-api-with-curl?tabs=dotnet6%2Cbash&pivots=api&WT.mc_id=MVP_344197#test-the-web-api-1)
+
 ## Useful links
 
 - [Set up a GitHub Actions workflow manually](https://learn.microsoft.com/en-us/azure/app-service/deploy-github-actions?tabs=openid%2Caspnetcore&WT.mc_id=MVP_344197#set-up-a-github-actions-workflow-manually)
 - [Authenticating using a Service Principal and OpenID Connect](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/guides/service_principal_oidc)
+- [Tutorial: Register a web API with the Microsoft identity platform](https://learn.microsoft.com/en-us/entra/identity-platform/tutorial-web-api-dotnet-register-app?WT.mc_id=MVP_344197)
+- [Tutorial: Create and configure an ASP.NET Core project for authentication](https://learn.microsoft.com/en-us/entra/identity-platform/tutorial-web-api-dotnet-prepare-app?WT.mc_id=MVP_344197)
+- [Tutorial: Implement a protected endpoint to your API](https://learn.microsoft.com/en-us/entra/identity-platform/tutorial-web-api-dotnet-protect-endpoint?WT.mc_id=MVP_344197)
+- [Call an ASP.NET Core web API with cURL](https://learn.microsoft.com/en-us/entra/identity-platform/howto-call-a-web-api-with-curl?tabs=dotnet6%2Cbash&pivots=api&WT.mc_id=MVP_344197)
