@@ -63,7 +63,7 @@ resource "azurerm_key_vault_secret" "localdevapppwd-secret" {
   count        = var.stage == "dev" ? 1 : 0
   key_vault_id = azurerm_key_vault.kv.id
   name         = "LocalDevClientSecret"
-  value        = azuread_application_password.aadapppwd.value
+  value        = azuread_application_password.localdevapppwd.value
 }
 
 resource "azuread_application" "postman-aadapp" {
@@ -75,7 +75,7 @@ resource "azuread_application" "postman-aadapp" {
   }
 
   required_resource_access {
-    resource_app_id = azuread_application.aadapp.object_id
+    resource_app_id = azuread_application.aadapp.client_id
 
     resource_access {
       id   = random_uuid.random-uuid-forecast-read.result
