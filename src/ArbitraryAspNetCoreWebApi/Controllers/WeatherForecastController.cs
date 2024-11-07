@@ -4,7 +4,7 @@ using Microsoft.Identity.Web.Resource;
 
 namespace ArbitraryAspNetCoreWebApi.Controllers
 {
-    [Authorize]
+    [Authorize(Policy = "MyPolicy")]
     [ApiController]
     [Route("[controller]")]
     [RequiredScope(RequiredScopesConfigurationKey = "AzureAd:Scopes")]
