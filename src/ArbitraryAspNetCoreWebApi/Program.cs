@@ -1,7 +1,20 @@
+using Azure.Identity;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Identity.Web;
 
 var builder = WebApplication.CreateBuilder(args);
+
+var azureKeyVaultEndpoint = builder.Configuration["AzureKeyVaultEndpoint"];
+if (!string.IsNullOrEmpty(azureKeyVaultEndpoint))
+{
+    // Add Secrets from Azure Key Vault
+    builder.Configuration.AddAzureKeyVault(new Uri(azureKeyVaultEndpoint), new ManagedIdentityCredential());
+}
+else
+{
+    // Add Secrets from managed user secrets for local development
+    builder.Configuration.AddUserSecrets("e5737a3a-d7aa-4968-88ea-f4c0fe1619b9");
+}
 
 // Add services to the container
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
