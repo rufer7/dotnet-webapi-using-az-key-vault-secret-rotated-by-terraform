@@ -82,6 +82,10 @@ resource "azuread_application" "postman-aadapp" {
       type = "Scope"
     }
   }
+
+  web {
+    redirect_uris = ["http://localhost/"]
+  }
 }
 
 resource "azuread_service_principal" "postman-aadapp-sp" {

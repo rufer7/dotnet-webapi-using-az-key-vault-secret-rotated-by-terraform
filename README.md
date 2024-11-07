@@ -69,14 +69,14 @@ Rotate Azure Key Vault secrets used by an ASP.NET Core Web API with Terraform on
 1. Right click on the project `ArbitraryAspNetCoreWebApi` and select `Set as Startup Project`
 1. Press `F5` to start the application
 
-## Test the application
+## Test application
 
-To test the application (either a locally running instance or the deployed one), see [Test the web API](https://learn.microsoft.com/en-us/entra/identity-platform/howto-call-a-web-api-with-curl?tabs=dotnet6%2Cbash&pivots=api&WT.mc_id=MVP_344197#test-the-web-api-1)
+To test the application (either a locally running instance or the deployed one), see [Test the web API](https://learn.microsoft.com/en-us/entra/identity-platform/howto-call-a-web-api-with-curl?tabs=dotnet6%2Cbash&pivots=api&WT.mc_id=MVP_344197#test-the-web-api-1). The requests can also be done with [Postman](https://www.postman.com/).
 
 > [!IMPORTANT]
 >
-> - Client secret for app registration `kv-secret-rotation-sample Postman dev` has to be created manually in the Azure portal
-> - Admin consent has to be granted for the app registration `kv-secret-rotation-sample Postman dev`
+> - A client secret for app registration `kv-secret-rotation-sample Postman dev` has to be created manually in the Azure portal
+> - Admin consent has to be granted for the permissions granted to app registration `kv-secret-rotation-sample Postman dev`
 
 ## Useful links
 
