@@ -75,7 +75,7 @@ resource "azuread_application" "postman-aadapp" {
   }
 
   required_resource_access {
-    resource_app_id = azuread_application.aadapp.id
+    resource_app_id = azuread_application.aadapp.object_id
 
     resource_access {
       id   = random_uuid.random-uuid-forecast-read.result
