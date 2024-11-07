@@ -61,7 +61,7 @@ jobs:
       - name: Terraform init
         run: terraform -chdir=${{ env.TERRAFORM_ROOT_DIRECTORY }} init --backend-config=backend/dev.backend.tfvars --backend-config='client_id=${{ secrets.AZURE_CLIENT_ID }}' --backend-config='subscription_id=${{ secrets.AZURE_SUBSCRIPTION_ID }}' --backend-config='tenant_id=${{ secrets.AZURE_TENANT_ID }}' --backend-config='use_oidc=true'
       - name: Terraform plan
-        run: terraform -chdir=${{ env.TERRAFORM_ROOT_DIRECTORY }} plan --var-file=vars/dev.app.tfvars --var='client_id=${{ secrets.AZURE_CLIENT_ID }}' --var='subscription_id=${{ secrets.AZURE_SUBSCRIPTION_ID }}' --var='tenant_id=${{ secrets.AZURE_TENANT_ID }}' --state=dev.app.tfstate -out=tfplan
+        run: terraform -chdir=${{ env.TERRAFORM_ROOT_DIRECTORY }} plan --var-file=vars/dev.app.tfvars --var='client_id=${{ secrets.AZURE_CLIENT_ID }}' --var='subscription_id=${{ secrets.AZURE_SUBSCRIPTION_ID }}' --var='tenant_id=${{ secrets.AZURE_TENANT_ID }}' -replace azuread_application_password.aadapppwd --state=dev.app.tfstate -out=tfplan
 
   iac_apply:
     name: Apply Infrastructure as Code
@@ -82,7 +82,7 @@ jobs:
       - name: Terraform init
         run: terraform -chdir=${{ env.TERRAFORM_ROOT_DIRECTORY }} init --backend-config=backend/dev.backend.tfvars --backend-config='client_id=${{ secrets.AZURE_CLIENT_ID }}' --backend-config='subscription_id=${{ secrets.AZURE_SUBSCRIPTION_ID }}' --backend-config='tenant_id=${{ secrets.AZURE_TENANT_ID }}' --backend-config='use_oidc=true'
       - name: Terraform apply
-        run: terraform -chdir=${{ env.TERRAFORM_ROOT_DIRECTORY }} apply --var-file=vars/dev.app.tfvars --var='client_id=${{ secrets.AZURE_CLIENT_ID }}' --var='subscription_id=${{ secrets.AZURE_SUBSCRIPTION_ID }}' --var='tenant_id=${{ secrets.AZURE_TENANT_ID }}' --state=dev.app.tfstate -auto-approve
+        run: terraform -chdir=${{ env.TERRAFORM_ROOT_DIRECTORY }} apply --var-file=vars/dev.app.tfvars --var='client_id=${{ secrets.AZURE_CLIENT_ID }}' --var='subscription_id=${{ secrets.AZURE_SUBSCRIPTION_ID }}' --var='tenant_id=${{ secrets.AZURE_TENANT_ID }}' -replace azuread_application_password.aadapppwd --state=dev.app.tfstate -auto-approve
 
   deploy:
     name: Deploy to Azure Web App
@@ -97,12 +97,12 @@ jobs:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-#      - name: Deploy to Azure Web App
-#        uses: azure/webapps-deploy@v3
-#        with:
-#          app-name: kv-secret-rotation-sample-appsrv-dev
-#          resource-group-name: kv-secret-rotation-sample-rg-dev
-#          package: .
+      #      - name: Deploy to Azure Web App
+      #        uses: azure/webapps-deploy@v3
+      #        with:
+      #          app-name: kv-secret-rotation-sample-appsrv-dev
+      #          resource-group-name: kv-secret-rotation-sample-rg-dev
+      #          package: .
       - name: Deploy to Azure Web App
         uses: azure/cli@v2
         with:
