@@ -43,7 +43,7 @@ resource "azuread_application_identifier_uri" "aadapp-identifier-uri" {
 resource "azuread_application_password" "aadapppwd" {
   display_name   = "apppwd"
   application_id = azuread_application.aadapp.id
-  end_date       = timeadd(timestamp(), "2160h")
+  end_date       = "2099-01-01T00:00:00Z"
 }
 
 resource "azurerm_key_vault_secret" "aadapppwd-secret" {
@@ -56,7 +56,7 @@ resource "azuread_application_password" "localdevapppwd" {
   count          = var.stage == "dev" ? 1 : 0
   display_name   = "localdevapppwd"
   application_id = azuread_application.aadapp.id
-  end_date       = timeadd(timestamp(), "17520h")
+  end_date       = "2099-01-01T00:00:00Z"
 }
 
 resource "azurerm_key_vault_secret" "localdevapppwd-secret" {
