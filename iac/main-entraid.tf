@@ -79,7 +79,7 @@ resource "azuread_application" "postman-aadapp" {
 
     resource_access {
       id   = random_uuid.random-uuid-forecast-read.result
-      type = "Role"
+      type = "Scope"
     }
   }
 }
