@@ -19,10 +19,25 @@ resource "azuread_application" "aadapp" {
       value                      = "Forecast.Read"
     }
   }
+
+  lifecycle {
+    ignore_changes = [
+      identifier_uris,
+    ]
+  }
 }
 
 resource "azuread_service_principal" "aadapp-sp" {
   client_id = azuread_application.aadapp.client_id
+
+  feature_tags {
+    enterprise = true
+  }
+}
+
+resource "azuread_application_identifier_uri" "aadapp-identifier-uri" {
+  application_id = azuread_application.aadapp.id
+  identifier_uri = "api://${azuread_application.aadapp.client_id}"
 }
 
 resource "azuread_application_password" "aadapppwd" {
