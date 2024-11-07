@@ -97,9 +97,9 @@ To test the application (either a locally running instance or a deployed one), p
    - `{client_app_reg_client_id}`: client id of the app registration with infix `Client` created by Terraform
    - `{web_API_application_client_id}`: client id of the app registration with infix `Application` created by Terraform
 
-1. Copy the authorization code from the URL and use it in the following request in PowerShell
+1. Copy the authorization code from the URL and use it in the following request in windows command prompt
 
-   ```PowerShell
+   ```bash
    curl -X POST https://login.microsoftonline.com/{tenant_id}/oauth2/v2.0/token ^
     -d "client_id={client_app_reg_client_id}" ^
     -d "api://{web_API_application_client_id}/Forecast.Read" ^
@@ -111,7 +111,7 @@ To test the application (either a locally running instance or a deployed one), p
 
 1. Copy the access token from the response and use it in the following request
 
-   ```PowerShell
+   ```bash
    curl -X GET https://APPLICATION_BASE_URL:PORT/WeatherForecast ^
     -H "Authorization: Bearer {access_token}"
    ```
