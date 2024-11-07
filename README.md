@@ -18,7 +18,7 @@ Rotate Azure Key Vault secrets used by an ASP.NET Core Web API with Terraform on
 ### Deploy resources to host terraform state
 
 1. Adjust values in `iac-core\vars\dev.core.tfvars`
-1. Create resources to host terraform state using the following commands
+1. Create resources to host terraform state by executing the following commands
 
    ```PowerShell
    az login -t [AZURE_TENANT_ID]
@@ -29,24 +29,24 @@ Rotate Azure Key Vault secrets used by an ASP.NET Core Web API with Terraform on
 
 ### Deploy application resources
 
-> [!NOTE]  
-> The application resources are created via GitHub actions workflow. The following steps are only required if you want to create the resources manually.
-
 > [!IMPORTANT]
 > To generate deployment credentials and to configure the GitHub secrets for the GitHub actions workflow, see [here](https://learn.microsoft.com/en-us/azure/app-service/deploy-github-actions?tabs=openid%2Caspnetcore&WT.mc_id=MVP_344197#set-up-a-github-actions-workflow-manually).
-> There are currently two GitHub environments set up for this repository: `dev` and `dev-iac`
-> For both of them a separate federated credential is set up in the Entra app.
-> Furthermore the service principal is a member of the Entra group `kv-secret-rotation-sample-contributor-iac` and the following Microsoft Graph application permissions got added
+> There are currently two GitHub environments set up for this repository: `dev` and `dev-iac`.
+> For both of them a separate federated credential is set up in the Entra app which got created while generating deployment credentials.
+> Furthermore the service principal of the Entra app is a member of the Entra group `kv-secret-rotation-sample-contributor-iac` and the following Microsoft Graph application permissions got added
 >
 > - `Application.ReadWrite.All`
 > - `Domain.Read.All`
 > - `Group.ReadWrite.All`
 >
-> Last but not least, the service proncipal got assigned owner role on resource group.
+> Finally, the service principal was assigned the `Owner` role for the resource group.
+
+> [!NOTE]
+> The application resources are created via GitHub actions workflow. The following steps are only required, if you want to create the resources manually.
 
 1. Adjust values in `iac\vars\dev.app.tfvars`
 1. Adjust values in `iac\backend\dev.backend.tfvars`
-1. Create resources using the following commands
+1. Create application resources using the following commands
 
    ```PowerShell
    az login -t [AZURE_TENANT_ID]
@@ -61,22 +61,63 @@ Rotate Azure Key Vault secrets used by an ASP.NET Core Web API with Terraform on
 1. Open the solution `src\ArbitraryAspNetCoreWebApi.sln` in `Visual Studio 2022 Preview`
 1. Update the values of the following keys in `appsettings.Development.json`
 
-   - `AzureAd:ClientId` (client id of the app registration created by Terraform)
-   - `AzureAd:Domain`
-   - `AzureAd:TenantId`
-   - `AzureKeyVaultEndpoint` (URL of Azure Key Vault created by Terraform)
+   - `AzureAd:ClientId` (client id of the app registration with infix `Application` created by Terraform)
+   - `AzureAd:Domain` (domain of the Azure tenant)
+   - `AzureAd:TenantId` (id of the Azure tenant)
+
+1. Look up the Azure Key Vault secret with name `LocalDevClientSecret`
+1. Right click on the project `ArbitraryAspNetCoreWebApi` and select `Manage User Secrets`
+1. Add the following content to the `secrets.json` file and replace the value of `ClientSecret` with the secret from the Azure Key Vault
+
+   ```json
+   {
+     "AzureAd": {
+       "ClientSecret": "VALUE_OF_LOCAL_DEV_CLIENT_SECRET"
+     }
+   }
+   ```
 
 1. Right click on the project `ArbitraryAspNetCoreWebApi` and select `Set as Startup Project`
 1. Press `F5` to start the application
 
 ## Test application
 
-To test the application (either a locally running instance or the deployed one), see [Test the web API](https://learn.microsoft.com/en-us/entra/identity-platform/howto-call-a-web-api-with-curl?tabs=dotnet6%2Cbash&pivots=api&WT.mc_id=MVP_344197#test-the-web-api-1). The requests can also be done with [Postman](https://www.postman.com/).
+To test the application (either a locally running instance or a deployed one), proceed as follows.
 
 > [!IMPORTANT]
 >
-> - A client secret for app registration `kv-secret-rotation-sample Postman dev` has to be created manually in the Azure portal
-> - Admin consent has to be granted for the permissions granted to app registration `kv-secret-rotation-sample Postman dev`
+> - A client secret for app registration `kv-secret-rotation-sample Client dev` has to be created manually via the Azure portal
+> - Admin consent has to be granted for the permissions granted to app registration `kv-secret-rotation-sample Client dev`
+
+1. Request an authorization code by opening the following URL in a browser
+
+   `https://login.microsoftonline.com/{tenant_id}/oauth2/v2.0/authorize?client_id={client_app_reg_client_id}&response_type=code&redirect_uri=http://localhost&response_mode=query&scope=api://{web_API_application_client_id}/Forecast.Read`
+
+   - `{tenant_id}`: id of the Azure tenant
+   - `{client_app_reg_client_id}`: client id of the app registration with infix `Client` created by Terraform
+   - `{web_API_application_client_id}`: client id of the app registration with infix `Application` created by Terraform
+
+1. Copy the authorization code from the URL and use it in the following request in PowerShell
+
+   ```PowerShell
+   curl -X POST https://login.microsoftonline.com/{tenant_id}/oauth2/v2.0/token ^
+    -d "client_id={client_app_reg_client_id}" ^
+    -d "api://{web_API_application_client_id}/Forecast.Read" ^
+    -d "code={authorization_code}&session_state={client_app_reg_client_id}" ^
+    -d "redirect_uri=http://localhost" ^
+    -d "grant_type=authorization_code" ^
+    -d "client_secret={client_secret}"
+   ```
+
+1. Copy the access token from the response and use it in the following request
+
+   ```PowerShell
+   curl -X GET https://APPLICATION_BASE_URL:PORT/WeatherForecast ^
+    -H "Authorization: Bearer {access_token}"
+   ```
+
+> [!NOTE]
+> Alternatively, you can use `Postman` to send the requests.
 
 ## Useful links
 

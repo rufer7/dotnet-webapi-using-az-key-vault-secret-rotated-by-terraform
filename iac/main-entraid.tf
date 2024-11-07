@@ -66,8 +66,8 @@ resource "azurerm_key_vault_secret" "localdevapppwd-secret" {
   value        = azuread_application_password.localdevapppwd[0].value
 }
 
-resource "azuread_application" "postman-aadapp" {
-  display_name     = format("%s Postman %s", var.resource_prefix, var.stage)
+resource "azuread_application" "client-aadapp" {
+  display_name     = format("%s Client %s", var.resource_prefix, var.stage)
   identifier_uris  = []
   sign_in_audience = "AzureADMyOrg"
   api {
@@ -88,8 +88,8 @@ resource "azuread_application" "postman-aadapp" {
   }
 }
 
-resource "azuread_service_principal" "postman-aadapp-sp" {
-  client_id = azuread_application.postman-aadapp.client_id
+resource "azuread_service_principal" "client-aadapp-sp" {
+  client_id = azuread_application.client-aadapp.client_id
 
   feature_tags {
     enterprise = true
