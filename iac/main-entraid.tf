@@ -23,6 +23,10 @@ resource "azuread_application" "aadapp" {
 
 resource "azuread_service_principal" "aadapp-sp" {
   client_id = azuread_application.aadapp.client_id
+
+  feature_tags {
+    enterprise = true
+  }
 }
 
 resource "azuread_application_password" "aadapppwd" {
