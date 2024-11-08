@@ -5,6 +5,10 @@
 
 Rotate Azure Key Vault secrets used by an ASP.NET Core Web API with Terraform on every deployment
 
+Check out my blog post about this topic
+
+:memo: [[HOWTO] Rotate Azure Key Vault secrets used by an ASP.NET Core Web API with Terraform on every deployment](https://blog.rufer.be/2024/11/08/howto-rotate-azure-key-vault-secrets-used-by-an-asp-net-core-web-api-with-terraform-on-every-deployment/)
+
 ![Overview diagram](kv-secret-rotation-sample.png "Overview diagram")
 
 ## Getting started
