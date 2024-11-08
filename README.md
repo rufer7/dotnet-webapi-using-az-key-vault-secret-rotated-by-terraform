@@ -5,6 +5,8 @@
 
 Rotate Azure Key Vault secrets used by an ASP.NET Core Web API with Terraform on every deployment
 
+![Overview diagram](kv-secret-rotation-sample.png "Overview diagram")
+
 ## Getting started
 
 ### Prerequisites
