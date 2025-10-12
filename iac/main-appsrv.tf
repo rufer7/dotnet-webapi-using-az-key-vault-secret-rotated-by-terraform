@@ -16,7 +16,7 @@ resource "azurerm_linux_web_app" "appsrv" {
   https_only          = true
   site_config {
     application_stack {
-      dotnet_version = "8.0"
+      dotnet_version = "9.0"
     }
     http2_enabled = true
     always_on     = false
@@ -38,20 +38,4 @@ resource "azurerm_linux_web_app" "appsrv" {
       site_config["application_stack"]
     ]
   }
-}
-
-# Workaround until .NET 9.0 is supported by azurerm_linux_web_app
-resource "null_resource" "dotnet_version_adjustment" {
-  triggers = {
-    appsrv                = azurerm_linux_web_app.appsrv.id
-  }
-
-  provisioner "local-exec" {
-    command     = "az webapp config set -g ${azurerm_resource_group.rg.name} -n ${azurerm_linux_web_app.appsrv.name} --linux-fx-version \"DOTNETCORE|9.0\""
-    interpreter = ["pwsh", "-Command"]
-  }
-
-  depends_on = [
-    azurerm_linux_web_app.appsrv
-  ]
 }

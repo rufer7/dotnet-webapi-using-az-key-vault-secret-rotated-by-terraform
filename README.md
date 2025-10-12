@@ -15,11 +15,11 @@ Check out my blog post about this topic
 
 ### Prerequisites
 
-- [Visual Studio 2022 Preview](https://visualstudio.microsoft.com/vs/preview/)
+- [Visual Studio 2022](https://visualstudio.microsoft.com/vs/)
 - [.NET SDK 9.0.100-rc.2](https://dotnet.microsoft.com/en-us/download/dotnet/9.0)
 - Azure tenant with a subscription and permissions to create resources and app registrations
 - [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli?WT.mc_id=MVP_344197)
-- [Terraform 1.9.8](https://developer.hashicorp.com/terraform/install?product_intent=terraform)
+- [Terraform 1.13.3](https://developer.hashicorp.com/terraform/install?product_intent=terraform)
 
 ### Deploy resources to host terraform state
 
@@ -64,7 +64,7 @@ Check out my blog post about this topic
 ### Run application locally
 
 1. Clone this GitHub repository
-1. Open the solution `src\ArbitraryAspNetCoreWebApi.sln` in `Visual Studio 2022 Preview`
+1. Open the solution `src\ArbitraryAspNetCoreWebApi.sln` in `Visual Studio 2022`
 1. Update the values of the following keys in `appsettings.Development.json`
 
    - `AzureAd:ClientId` (client id of the app registration with infix `Application` created by Terraform)
