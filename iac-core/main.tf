@@ -1,7 +1,7 @@
 data "azurerm_client_config" "current" {}
 
 locals {
-  name_template       = "${var.resource_prefix}-<service>-iac"
+  name_template = "${var.resource_prefix}-<service>-iac"
 }
 
 # Resource Group
@@ -35,8 +35,8 @@ resource "azurerm_storage_account" "sa" {
 
 # container iac-state
 resource "azurerm_storage_container" "tfstate" {
-  name                 = "tfstate"
-  storage_account_name = azurerm_storage_account.sa.name
+  name               = "tfstate"
+  storage_account_id = azurerm_storage_account.sa.id
 }
 
 resource "azurerm_role_assignment" "blob-data-owner" {

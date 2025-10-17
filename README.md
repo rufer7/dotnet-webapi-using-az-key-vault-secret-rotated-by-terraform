@@ -30,13 +30,13 @@ Check out my blog post about this topic
    az login -t [AZURE_TENANT_ID]
    cd [PATH_TO_REPOSITORY]\iac-core
    terraform init
-   terraform apply --var-file=.\vars\dev.core.tfvars --state=dev.core.tfstate
+   terraform apply --var-file=.\vars\dev.core.tfvars
    ```
 
 ### Deploy application resources
 
 > [!IMPORTANT]
-> To generate deployment credentials and to configure the GitHub secrets for the GitHub actions workflow, see [here](https://learn.microsoft.com/en-us/azure/app-service/deploy-github-actions?tabs=openid%2Caspnetcore&WT.mc_id=MVP_344197#set-up-a-github-actions-workflow-manually).
+> To generate deployment credentials and to configure the secrets for the GitHub actions workflow, see [here](https://learn.microsoft.com/en-us/azure/app-service/deploy-github-actions?tabs=openid%2Caspnetcore&WT.mc_id=MVP_344197#set-up-a-github-actions-workflow-manually).
 > There are currently two GitHub environments set up for this repository: `dev` and `dev-iac`.
 > For both of them a separate federated credential is set up in the Entra app which got created while generating deployment credentials.
 > Furthermore the service principal of the Entra app is a member of the Entra group `kv-secret-rotation-sample-contributor-iac` and the following Microsoft Graph application permissions got added
