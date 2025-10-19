@@ -46,7 +46,7 @@ jobs:
   iac_plan:
     name: Plan Infrastructure as Code
     runs-on: ubuntu-latest
-    environment: dev
+    environment: dev-iac
     steps:
       - uses: actions/checkout@v4
       - uses: azure/login@v2
