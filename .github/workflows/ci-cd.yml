@@ -10,10 +10,10 @@ permissions:
 
 env:
   # AZURE_CORE_OUTPUT: none
-  AZURE_WEBAPP_PACKAGE_PATH: "./app.zip"
+  AZURE_WEBAPP_PACKAGE_PATH: "."
   DOTNET_VERSION: "9.0.x"
-  TERRAFORM_VERSION: "1.13.3"
   TERRAFORM_ROOT_DIRECTORY: "./iac"
+  TERRAFORM_VERSION: "1.13.3"
 
 jobs:
   build_test_publish:
@@ -23,7 +23,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Setup .NET
-        uses: actions/setup-dotnet@v4
+        uses: actions/setup-dotnet@v5
         with:
           dotnet-version: ${{ env.DOTNET_VERSION }}
       - name: Build
@@ -31,17 +31,12 @@ jobs:
       - name: Test
         run: dotnet test src/ArbitraryAspNetCoreWebApi.sln --configuration Release --no-build --verbosity normal
       - name: Publish
-        run: dotnet publish src/ArbitraryAspNetCoreWebApi --configuration Release --output ./temp
-      - name: Create Zip
-        shell: pwsh
-        run: |
-          cd ./temp
-          zip -r ../app.zip ./*
+        run: dotnet publish src/ArbitraryAspNetCoreWebApi -c Release -o ./temp
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
           name: arbitrary-aspnetcore-webapi
-          path: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+          path: ./temp
 
   iac_plan:
     name: Plan Infrastructure as Code
@@ -85,29 +80,29 @@ jobs:
         run: terraform -chdir=${{ env.TERRAFORM_ROOT_DIRECTORY }} apply --var-file=vars/dev.app.tfvars --var='client_id=${{ secrets.AZURE_CLIENT_ID }}' --var='subscription_id=${{ secrets.AZURE_SUBSCRIPTION_ID }}' --var='tenant_id=${{ secrets.AZURE_TENANT_ID }}' -replace azuread_application_password.aadapppwd --state=dev.app.tfstate -auto-approve
 
   deploy:
-    name: Deploy to Azure Web App
+    name: Deploy to Azure App Service
     runs-on: ubuntu-latest
-    environment: dev
+    environment:
+      name: dev
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     needs: [build_test_publish, iac_apply]
     steps:
       - name: Download artifact
         uses: actions/download-artifact@v4
+          with:
+            name: arbitrary-aspnetcore-webapi
       - uses: azure/login@v2
         with:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-      - name: Deploy to Azure Web App
+      - name: Deploy to Azure App Service
+        id: deploy-to-webapp
         uses: azure/webapps-deploy@v3
         with:
           app-name: kv-secret-rotation-sample-appsrv-dev
           resource-group-name: kv-secret-rotation-sample-rg-dev
-          package: .
-      # - name: Deploy to Azure Web App
-      #   uses: azure/cli@v2
-      #   with:
-      #     inlineScript: |
-      #       az webapp deploy --resource-group kv-secret-rotation-sample-rg-dev --name kv-secret-rotation-sample-appsrv-dev --src-path $GITHUB_WORKSPACE/arbitrary-aspnetcore-webapi/app.zip --track-status false
+          package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
       - name: Logout
         run: |
           az logout
