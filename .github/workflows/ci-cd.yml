@@ -38,71 +38,71 @@ jobs:
           name: arbitrary-aspnetcore-webapi
           path: ./temp
 
-  iac_plan:
-    name: Plan Infrastructure as Code
-    runs-on: ubuntu-latest
-    environment: dev-iac
-    steps:
-      - uses: actions/checkout@v4
-      - uses: azure/login@v2
-        with:
-          client-id: ${{ secrets.AZURE_CLIENT_ID }}
-          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v3
-        with:
-          terraform_version: ${{ env.TERRAFORM_VERSION }}
-      - name: Terraform init
-        run: terraform -chdir=${{ env.TERRAFORM_ROOT_DIRECTORY }} init --backend-config=backend/dev.backend.tfvars --backend-config='client_id=${{ secrets.AZURE_CLIENT_ID }}' --backend-config='subscription_id=${{ secrets.AZURE_SUBSCRIPTION_ID }}' --backend-config='tenant_id=${{ secrets.AZURE_TENANT_ID }}' --backend-config='use_oidc=true'
-      - name: Terraform plan
-        run: terraform -chdir=${{ env.TERRAFORM_ROOT_DIRECTORY }} plan --var-file=vars/dev.app.tfvars --var='client_id=${{ secrets.AZURE_CLIENT_ID }}' --var='subscription_id=${{ secrets.AZURE_SUBSCRIPTION_ID }}' --var='tenant_id=${{ secrets.AZURE_TENANT_ID }}' -replace azuread_application_password.aadapppwd --state=dev.app.tfstate -out=tfplan
+  # iac_plan:
+  #   name: Plan Infrastructure as Code
+  #   runs-on: ubuntu-latest
+  #   environment: dev-iac
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: azure/login@v2
+  #       with:
+  #         client-id: ${{ secrets.AZURE_CLIENT_ID }}
+  #         tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+  #         subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+  #     - name: Setup Terraform
+  #       uses: hashicorp/setup-terraform@v3
+  #       with:
+  #         terraform_version: ${{ env.TERRAFORM_VERSION }}
+  #     - name: Terraform init
+  #       run: terraform -chdir=${{ env.TERRAFORM_ROOT_DIRECTORY }} init --backend-config=backend/dev.backend.tfvars --backend-config='client_id=${{ secrets.AZURE_CLIENT_ID }}' --backend-config='subscription_id=${{ secrets.AZURE_SUBSCRIPTION_ID }}' --backend-config='tenant_id=${{ secrets.AZURE_TENANT_ID }}' --backend-config='use_oidc=true'
+  #     - name: Terraform plan
+  #       run: terraform -chdir=${{ env.TERRAFORM_ROOT_DIRECTORY }} plan --var-file=vars/dev.app.tfvars --var='client_id=${{ secrets.AZURE_CLIENT_ID }}' --var='subscription_id=${{ secrets.AZURE_SUBSCRIPTION_ID }}' --var='tenant_id=${{ secrets.AZURE_TENANT_ID }}' -replace azuread_application_password.aadapppwd --state=dev.app.tfstate -out=tfplan
 
-  iac_apply:
-    name: Apply Infrastructure as Code
-    runs-on: ubuntu-latest
-    environment: dev-iac
-    needs: iac_plan
-    steps:
-      - uses: actions/checkout@v4
-      - uses: azure/login@v2
-        with:
-          client-id: ${{ secrets.AZURE_CLIENT_ID }}
-          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v3
-        with:
-          terraform_version: ${{ env.TERRAFORM_VERSION }}
-      - name: Terraform init
-        run: terraform -chdir=${{ env.TERRAFORM_ROOT_DIRECTORY }} init --backend-config=backend/dev.backend.tfvars --backend-config='client_id=${{ secrets.AZURE_CLIENT_ID }}' --backend-config='subscription_id=${{ secrets.AZURE_SUBSCRIPTION_ID }}' --backend-config='tenant_id=${{ secrets.AZURE_TENANT_ID }}' --backend-config='use_oidc=true'
-      - name: Terraform apply
-        run: terraform -chdir=${{ env.TERRAFORM_ROOT_DIRECTORY }} apply --var-file=vars/dev.app.tfvars --var='client_id=${{ secrets.AZURE_CLIENT_ID }}' --var='subscription_id=${{ secrets.AZURE_SUBSCRIPTION_ID }}' --var='tenant_id=${{ secrets.AZURE_TENANT_ID }}' -replace azuread_application_password.aadapppwd --state=dev.app.tfstate -auto-approve
+  # iac_apply:
+  #   name: Apply Infrastructure as Code
+  #   runs-on: ubuntu-latest
+  #   environment: dev-iac
+  #   needs: iac_plan
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - uses: azure/login@v2
+  #       with:
+  #         client-id: ${{ secrets.AZURE_CLIENT_ID }}
+  #         tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+  #         subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+  #     - name: Setup Terraform
+  #       uses: hashicorp/setup-terraform@v3
+  #       with:
+  #         terraform_version: ${{ env.TERRAFORM_VERSION }}
+  #     - name: Terraform init
+  #       run: terraform -chdir=${{ env.TERRAFORM_ROOT_DIRECTORY }} init --backend-config=backend/dev.backend.tfvars --backend-config='client_id=${{ secrets.AZURE_CLIENT_ID }}' --backend-config='subscription_id=${{ secrets.AZURE_SUBSCRIPTION_ID }}' --backend-config='tenant_id=${{ secrets.AZURE_TENANT_ID }}' --backend-config='use_oidc=true'
+  #     - name: Terraform apply
+  #       run: terraform -chdir=${{ env.TERRAFORM_ROOT_DIRECTORY }} apply --var-file=vars/dev.app.tfvars --var='client_id=${{ secrets.AZURE_CLIENT_ID }}' --var='subscription_id=${{ secrets.AZURE_SUBSCRIPTION_ID }}' --var='tenant_id=${{ secrets.AZURE_TENANT_ID }}' -replace azuread_application_password.aadapppwd --state=dev.app.tfstate -auto-approve
 
-  deploy:
-    name: Deploy to Azure App Service
-    runs-on: ubuntu-latest
-    environment:
-      name: dev
-      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
-    needs: [build_test_publish, iac_apply]
-    steps:
-      - name: Download artifact
-        uses: actions/download-artifact@v4
-        with:
-          name: arbitrary-aspnetcore-webapi
-      - uses: azure/login@v2
-        with:
-          client-id: ${{ secrets.AZURE_CLIENT_ID }}
-          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-      - name: Deploy to Azure App Service
-        id: deploy-to-webapp
-        uses: azure/webapps-deploy@v3
-        with:
-          app-name: kv-secret-rotation-sample-appsrv-dev
-          resource-group-name: kv-secret-rotation-sample-rg-dev
-          package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
-      - name: Logout
-        run: |
-          az logout
+  # deploy:
+  #   name: Deploy to Azure App Service
+  #   runs-on: ubuntu-latest
+  #   environment:
+  #     name: dev
+  #     url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+  #   needs: [build_test_publish, iac_apply]
+  #   steps:
+  #     - name: Download artifact
+  #       uses: actions/download-artifact@v4
+  #       with:
+  #         name: arbitrary-aspnetcore-webapi
+  #     - uses: azure/login@v2
+  #       with:
+  #         client-id: ${{ secrets.AZURE_CLIENT_ID }}
+  #         tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+  #         subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+  #     - name: Deploy to Azure App Service
+  #       id: deploy-to-webapp
+  #       uses: azure/webapps-deploy@v3
+  #       with:
+  #         app-name: kv-secret-rotation-sample-appsrv-dev
+  #         resource-group-name: kv-secret-rotation-sample-rg-dev
+  #         package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+  #     - name: Logout
+  #       run: |
+  #         az logout
